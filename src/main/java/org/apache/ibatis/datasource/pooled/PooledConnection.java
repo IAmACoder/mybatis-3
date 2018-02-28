@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import org.apache.ibatis.reflection.ExceptionUtil;
 
 /**
+ * JDK真正的Connection的代理
+ *
  * @author Clinton Begin
  */
 class PooledConnection implements InvocationHandler {
@@ -33,6 +35,7 @@ class PooledConnection implements InvocationHandler {
 
   private final int hashCode;
   private final PooledDataSource dataSource;
+  // JDK中的真正的连接
   private final Connection realConnection;
   private final Connection proxyConnection;
   private long checkoutTimestamp;
@@ -232,6 +235,7 @@ class PooledConnection implements InvocationHandler {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
+    // 拦截sql connection的close方法，不做真正的连接关闭
     if (CLOSE.hashCode() == methodName.hashCode() && CLOSE.equals(methodName)) {
       dataSource.pushConnection(this);
       return null;
@@ -242,6 +246,7 @@ class PooledConnection implements InvocationHandler {
           // throw an SQLException instead of a Runtime
           checkConnection();
         }
+        // 调用真正的sql connection执行
         return method.invoke(realConnection, args);
       } catch (Throwable t) {
         throw ExceptionUtil.unwrapThrowable(t);
