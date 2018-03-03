@@ -186,10 +186,12 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     final List<Object> multipleResults = new ArrayList<Object>();
 
     int resultSetCount = 0;
+    // 获取sql执行的结果
     ResultSetWrapper rsw = getFirstResultSet(stmt);
-
+    // 获取mybatis的数据库结果映射
     List<ResultMap> resultMaps = mappedStatement.getResultMaps();
     int resultMapCount = resultMaps.size();
+    // 验证结果不为空的情况下映射器是否存在
     validateResultMapsCount(rsw, resultMapCount);
     while (rsw != null && resultMapCount > resultSetCount) {
       ResultMap resultMap = resultMaps.get(resultSetCount);

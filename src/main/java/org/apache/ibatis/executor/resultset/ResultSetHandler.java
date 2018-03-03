@@ -27,6 +27,13 @@ import java.util.List;
  */
 public interface ResultSetHandler {
 
+  /**
+   * 执行sql语句，并转换结果集为Java元素列表
+   * @param stmt sql执行类
+   * @param <E> Java元素的数据类型
+   * @return Java结果列表
+   * @throws SQLException
+   */
   <E> List<E> handleResultSets(Statement stmt) throws SQLException;
 
   <E> Cursor<E> handleCursorResultSets(Statement stmt) throws SQLException;

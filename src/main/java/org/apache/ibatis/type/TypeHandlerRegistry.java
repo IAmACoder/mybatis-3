@@ -49,6 +49,9 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.reflection.Jdk;
 
 /**
+ * Java数据类型、数据库数据类型处理器注册中心
+ * 里面包含了将Java数据类型转换为数据库数据类型，以及将数据库类型转换为Java数据类型
+ * 的所有的类型的转换器，主要用于sql执行和结果集的提取两个主要的功能
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */

@@ -36,6 +36,9 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.apache.ibatis.type.UnknownTypeHandler;
 
 /**
+ * JDK ResultSet的封装
+ * 将ResultSet中的信息解析封装到额外的数据结构中，加速后续的结果集
+ * 映射等过程，提高数据库数据类型和Java数据类型之间的转换效率
  * @author Iwao AVE!
  */
 public class ResultSetWrapper {
@@ -74,6 +77,11 @@ public class ResultSetWrapper {
     return Collections.unmodifiableList(classNames);
   }
 
+  /**
+   * 获取对应数据列的JDBC数据类型
+   * @param columnName 数据列名称
+   * @return null如果没有相应的列名
+   */
   public JdbcType getJdbcType(String columnName) {
     for (int i = 0 ; i < columnNames.size(); i++) {
       if (columnNames.get(i).equalsIgnoreCase(columnName)) {

@@ -21,12 +21,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * 数据类型转换的handler接口
+ * <p>Java数据类型->数据库数据类型;数据库数据类型->Java数据类型
  * @author Clinton Begin
  */
 public interface TypeHandler<T> {
 
+  /** 将Java数据类型的参数转换为数据库中数据类型，并添加到sql statement中 */
   void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
 
+  /** 从结果集中根据列名获取数据，并转换为相应的Java类型[T] */
   T getResult(ResultSet rs, String columnName) throws SQLException;
 
   T getResult(ResultSet rs, int columnIndex) throws SQLException;
