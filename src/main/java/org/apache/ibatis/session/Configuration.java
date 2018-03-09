@@ -173,6 +173,7 @@ public class Configuration {
   }
 
   public Configuration() {
+    // 注册xml配置文件中 type值关联的类型
     typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
     typeAliasRegistry.registerAlias("MANAGED", ManagedTransactionFactory.class);
 
