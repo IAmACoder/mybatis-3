@@ -35,6 +35,7 @@ public class BaseTest {
   public static void setUp() throws Exception {
     // create an SqlSessionFactory
     Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/basetest/mybatis-config.xml");
+    // 创建的对象是 DefaultSqlSessionFactory
     sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
     reader.close();
 

@@ -47,6 +47,7 @@ public class MapperRegistry {
       throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
     }
     try {
+      // 创建Mapper代理对象
       return mapperProxyFactory.newInstance(sqlSession);
     } catch (Exception e) {
       throw new BindingException("Error getting mapper instance. Cause: " + e, e);
@@ -64,12 +65,14 @@ public class MapperRegistry {
       }
       boolean loadCompleted = false;
       try {
+        // 每一个mapper，创建一个MapperProxyFactory, 创建一个MapperProxyFactory用于创建自定义mapper接口的代理类
         knownMappers.put(type, new MapperProxyFactory<T>(type));
         // It's important that the type is added before the parser is run
         // otherwise the binding may automatically be attempted by the
         // mapper parser. If the type is already known, it won't try.
         MapperAnnotationBuilder parser = new MapperAnnotationBuilder(config, type);
         parser.parse();
+        // 在末尾设一个标志位，用来判断程序是否执行到此处
         loadCompleted = true;
       } finally {
         if (!loadCompleted) {

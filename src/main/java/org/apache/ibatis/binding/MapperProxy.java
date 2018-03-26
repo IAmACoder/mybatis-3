@@ -30,6 +30,7 @@ import org.apache.ibatis.session.SqlSession;
 /**
  * @author Clinton Begin
  * @author Eduardo Macarron
+ * 自定义mapper代理handler，
  */
 public class MapperProxy<T> implements InvocationHandler, Serializable {
 
@@ -48,14 +49,16 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
       if (Object.class.equals(method.getDeclaringClass())) {
-        return method.invoke(this, args);
+        return method.invoke(this, args);    // 处理属于Object的方法
       } else if (isDefaultMethod(method)) {
-        return invokeDefaultMethod(proxy, method, args);
+        return invokeDefaultMethod(proxy, method, args);           // 处理mapper接口中的default方法
       }
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);
     }
+    // 缓存mapper接口中的方法和对应的代理方法，mapperMethod对象用于正真执行CURD
     final MapperMethod mapperMethod = cachedMapperMethod(method);
+    // 开始执行CURD
     return mapperMethod.execute(sqlSession, args);
   }
 
