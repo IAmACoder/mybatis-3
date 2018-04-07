@@ -119,18 +119,25 @@ public class MapperAnnotationBuilder {
   }
 
   public void parse() {
+    // type是mapper的class信息
     String resource = type.toString();
     if (!configuration.isResourceLoaded(resource)) {
+      // 1、解析mapper的xml配置文件信息
       loadXmlResource();
       configuration.addLoadedResource(resource);
+      // type.getName=xml文件中的mapper的namespace
       assistant.setCurrentNamespace(type.getName());
+      // 2、解析mapper的cache注解
       parseCache();
+      // 3、解析mapper中cache的引用
       parseCacheRef();
+      // 4、解析mapper类型的所有的方法
       Method[] methods = type.getMethods();
       for (Method method : methods) {
         try {
           // issue #237
           if (!method.isBridge()) {
+              // 解析mapper接口的方法的注解信息
             parseStatement(method);
           }
         } catch (IncompleteElementException e) {
@@ -170,6 +177,7 @@ public class MapperAnnotationBuilder {
       }
       if (inputStream != null) {
         XMLMapperBuilder xmlParser = new XMLMapperBuilder(inputStream, assistant.getConfiguration(), xmlResource, configuration.getSqlFragments(), type.getName());
+        // 解析mapper对于的xml配置文件
         xmlParser.parse();
       }
     }
@@ -283,12 +291,18 @@ public class MapperAnnotationBuilder {
     return null;
   }
 
+    /**
+     * 解析mapper接口的方法的注解
+     * @param method mapper接口的方法
+     */
   void parseStatement(Method method) {
     Class<?> parameterTypeClass = getParameterType(method);
     LanguageDriver languageDriver = getLanguageDriver(method);
+    // 从method解析Select等注解内容，该注解会覆盖
     SqlSource sqlSource = getSqlSourceFromAnnotations(method, parameterTypeClass, languageDriver);
     if (sqlSource != null) {
       Options options = method.getAnnotation(Options.class);
+      // select等方法对于的statement对于的key=类的全限定名+方法名
       final String mappedStatementId = type.getName() + "." + method.getName();
       Integer fetchSize = null;
       Integer timeout = null;
@@ -332,6 +346,7 @@ public class MapperAnnotationBuilder {
         resultSetType = options.resultSetType();
       }
 
+      // 解析method方法的ResultMap的注解
       String resultMapId = null;
       ResultMap resultMapAnnotation = method.getAnnotation(ResultMap.class);
       if (resultMapAnnotation != null) {

@@ -146,15 +146,23 @@ public class Configuration {
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
 
+  /**
+   * select|insert|update|delete解析之对应的是MappedStatement
+   * 其中的key=mapper:namespace+节点的ID
+   */
   protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection");
   protected final Map<String, Cache> caches = new StrictMap<Cache>("Caches collection");
+  /** 结果集映射关系存储：key=mapper:namespace+resultMap:id */
   protected final Map<String, ResultMap> resultMaps = new StrictMap<ResultMap>("Result Maps collection");
+  /** 存储的信息的key和value的解析同上 */
   protected final Map<String, ParameterMap> parameterMaps = new StrictMap<ParameterMap>("Parameter Maps collection");
   protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<KeyGenerator>("Key Generators collection");
 
+  /** 用于记录已经被解析的mapper信息 */
   protected final Set<String> loadedResources = new HashSet<String>();
   protected final Map<String, XNode> sqlFragments = new StrictMap<XNode>("XML fragments parsed from previous mappers");
 
+  /** 存放解析出现异常的MappedStatement|Cache|ResultMap|Method */
   protected final Collection<XMLStatementBuilder> incompleteStatements = new LinkedList<XMLStatementBuilder>();
   protected final Collection<CacheRefResolver> incompleteCacheRefs = new LinkedList<CacheRefResolver>();
   protected final Collection<ResultMapResolver> incompleteResultMaps = new LinkedList<ResultMapResolver>();

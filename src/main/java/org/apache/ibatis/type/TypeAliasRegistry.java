@@ -33,6 +33,12 @@ import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.io.Resources;
 
 /**
+ * 类的别名管理，主要用于简化mapper中返回值类的全限定名
+ * 比如<select resultType="com.test.Hello"><select/>，在没有别名的情况下，必须填写类的
+ * 全限定名，如果类的全限定名过长而且使用也特别的频繁，那么会导致配置文件中过多无效的
+ * 配置信息，所以可以为Hello类的全限定名设置一个别名来达到简化配置的效果，通过别名配置
+ * 可以为Hello类设置映射<"hello",Hello.class>,<select resultType="hello"><select/>
+ *
  * @author Clinton Begin
  */
 public class TypeAliasRegistry {

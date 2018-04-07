@@ -54,6 +54,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private final XPathParser parser;
   private final MapperBuilderAssistant builderAssistant;
+  /** 用于缓存sql节点信息 */
   private final Map<String, XNode> sqlFragments;
   private final String resource;
 
@@ -89,6 +90,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   public void parse() {
     if (!configuration.isResourceLoaded(resource)) {
+      // <mapper></mapper>节点解析
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
       bindMapperForNamespace();
@@ -103,6 +105,10 @@ public class XMLMapperBuilder extends BaseBuilder {
     return sqlFragments.get(refid);
   }
 
+  /**
+   * Mapper的XML文件中的mapper节点解析
+   * @param context 是mapper节点
+   */
   private void configurationElement(XNode context) {
     try {
       String namespace = context.getStringAttribute("namespace");
@@ -112,9 +118,16 @@ public class XMLMapperBuilder extends BaseBuilder {
       builderAssistant.setCurrentNamespace(namespace);
       cacheRefElement(context.evalNode("cache-ref"));
       cacheElement(context.evalNode("cache"));
+      /*
+       * 解析<parameterMap></parameterMap>所有的节点
+       * parameterMap – 已废弃！老式风格的参数映射。内联参数是首选,这个元素可能在将来被移除，这里不会记录。
+       */
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
+      // 解析所有resultMap的节点
       resultMapElements(context.evalNodes("/mapper/resultMap"));
+      // 解析所有的sql节点
       sqlElement(context.evalNodes("/mapper/sql"));
+      // 解析所有的select|insert|update|delete等节点信息
       buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing Mapper XML. The XML location is '" + resource + "'. Cause: " + e, e);
@@ -238,6 +251,11 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 解析resultMap节点信息
+   * @param list resultMap节点列表
+   * @throws Exception
+   */
   private void resultMapElements(List<XNode> list) throws Exception {
     for (XNode resultMapNode : list) {
       try {
@@ -330,6 +348,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     for (XNode context : list) {
       String databaseId = context.getStringAttribute("databaseId");
       String id = context.getStringAttribute("id");
+      // 应用命名空间
       id = builderAssistant.applyCurrentNamespace(id, false);
       if (databaseIdMatchesCurrent(id, databaseId, requiredDatabaseId)) {
         sqlFragments.put(id, context);

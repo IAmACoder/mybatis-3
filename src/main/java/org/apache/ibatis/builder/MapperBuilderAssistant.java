@@ -82,6 +82,14 @@ public class MapperBuilderAssistant extends BaseBuilder {
     this.currentNamespace = currentNamespace;
   }
 
+  /**
+   * 在Mapper的xml文件中的mapper节点解析的时候，对节点中某些属性应用命名空间
+   * 通过应用命名空间的方式，用于区分不同mapper的xml文件中相同的节点ID信息，参考addResultMap
+   * 的ID的生成
+   * @param base
+   * @param isReference
+   * @return
+   */
   public String applyCurrentNamespace(String base, boolean isReference) {
     if (base == null) {
       return null;
@@ -180,6 +188,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
       Discriminator discriminator,
       List<ResultMapping> resultMappings,
       Boolean autoMapping) {
+    // 为ID应用命名空间，用于区分不同Mapper的XML中相同的ID
     id = applyCurrentNamespace(id, false);
     extend = applyCurrentNamespace(extend, true);
 
@@ -272,6 +281,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
       throw new IncompleteElementException("Cache-ref not yet resolved");
     }
 
+    // 为ID应用命名空间
     id = applyCurrentNamespace(id, false);
     boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
 

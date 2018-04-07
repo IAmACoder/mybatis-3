@@ -42,6 +42,7 @@ public class MapperRegistry {
 
   @SuppressWarnings("unchecked")
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
+    // 根据mapper接口的类信息获取对应的mapper的工厂类
     final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);
     if (mapperProxyFactory == null) {
       throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
@@ -71,6 +72,7 @@ public class MapperRegistry {
         // otherwise the binding may automatically be attempted by the
         // mapper parser. If the type is already known, it won't try.
         MapperAnnotationBuilder parser = new MapperAnnotationBuilder(config, type);
+        // 解析type的class name对于的所有的信息
         parser.parse();
         // 在末尾设一个标志位，用来判断程序是否执行到此处
         loadCompleted = true;

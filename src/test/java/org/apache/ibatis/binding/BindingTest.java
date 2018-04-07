@@ -64,7 +64,9 @@ public class BindingTest {
 
   @BeforeClass
   public static void setup() throws Exception {
+    // 创建data source(UnpooledDataSource)
     DataSource dataSource = BaseDataTest.createBlogDataSource();
+    //
     BaseDataTest.runScript(dataSource, BaseDataTest.BLOG_DDL);
     BaseDataTest.runScript(dataSource, BaseDataTest.BLOG_DATA);
     TransactionFactory transactionFactory = new JdbcTransactionFactory();
@@ -86,6 +88,7 @@ public class BindingTest {
     try {
       BoundBlogMapper mapper = session.getMapper(BoundBlogMapper.class);
       Blog b = mapper.selectBlogWithPostsUsingSubSelect(1);
+      System.out.println("查询出的Blog信息："+b);
       assertEquals(1, b.getId());
       session.close();
       assertNotNull(b.getAuthor());

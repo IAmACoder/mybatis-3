@@ -30,13 +30,23 @@ import org.apache.ibatis.session.SqlSession;
 /**
  * @author Clinton Begin
  * @author Eduardo Macarron
- * 自定义mapper代理handler，
+ * 自定义mapper代理handler
+ *
+ * 在使用mybatis的时候，mapper是一个包含了许多数据库方法接口，通过结合接口的方法信息
+ * 、接口方法的Select{@link org.apache.ibatis.annotations.Select}、Reuslt等注解信息
+ * 以及mapper.xml文件的配置，动态生成一个相应的数据库访问的代理类。
+ *
+ * 通过分解以前的数据库访问类和方法的编写，用户在编写数据库访问类的时候只需要关心如何
+ * 数据的查询和组织方式，而不用关心数据库连接的创建和释放、数据库连接池的管理等复杂且
+ * 约定俗成等功能，大大的提高了编码效率。
  */
 public class MapperProxy<T> implements InvocationHandler, Serializable {
 
   private static final long serialVersionUID = -6424540398559729838L;
   private final SqlSession sqlSession;
+  // mapper的接口信息（用于反射生成代理对象使用）
   private final Class<T> mapperInterface;
+  // mapper接口中的方法信息
   private final Map<Method, MapperMethod> methodCache;
 
   public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface, Map<Method, MapperMethod> methodCache) {

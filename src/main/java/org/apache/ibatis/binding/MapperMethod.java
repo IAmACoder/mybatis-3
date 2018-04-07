@@ -36,13 +36,18 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
+ * 具体的数据库访问方法的代理类，通过代理类开发者不用关系方法中数据库连接的获取
+ * 以及释放等重复的功能，避免在编码的时候忘记连接的释放等失误。
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  * @author Lasse Voss
  */
 public class MapperMethod {
-
+    // 开发者需要执行的sql命令
   private final SqlCommand command;
+  // 方法签名信息：包括方法的名字、参数的类型映射、数据库数据类型<—>Java数据类型映射
+  // 自定义结果类型处理器的信息
   private final MethodSignature method;
 
   public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
@@ -210,12 +215,14 @@ public class MapperMethod {
 
   public static class SqlCommand {
 
+    /** name的MappedStatement的ID */
     private final String name;
     private final SqlCommandType type;
 
     public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
       final String methodName = method.getName();
       final Class<?> declaringClass = method.getDeclaringClass();
+      // 获取方法的注解信息和方法所在类的同名xml配置等信息
       MappedStatement ms = resolveMappedStatement(mapperInterface, methodName, declaringClass,
           configuration);
       if (ms == null) {

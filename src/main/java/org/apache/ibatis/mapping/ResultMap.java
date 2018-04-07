@@ -38,7 +38,7 @@ import org.apache.ibatis.session.Configuration;
  */
 public class ResultMap {
   private Configuration configuration;
-
+  /** 应用了命名空间 */
   private String id;
   private Class<?> type;
   private List<ResultMapping> resultMappings;

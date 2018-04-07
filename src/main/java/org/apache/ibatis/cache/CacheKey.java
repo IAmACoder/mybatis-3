@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.ibatis.reflection.ArrayUtil;
 
 /**
+ * sql语句的缓存key
  * @author Clinton Begin
  */
 public class CacheKey implements Cloneable, Serializable {

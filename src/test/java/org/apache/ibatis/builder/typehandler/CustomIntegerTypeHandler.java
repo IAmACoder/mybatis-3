@@ -24,6 +24,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 自定义的整型数据处理器
+ */
 @MappedTypes(Integer.class)
 public class CustomIntegerTypeHandler implements TypeHandler<Integer> {
 

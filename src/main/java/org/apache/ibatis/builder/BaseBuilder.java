@@ -33,7 +33,9 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 public abstract class BaseBuilder {
   protected final Configuration configuration;
+  // 类型别名注册中心
   protected final TypeAliasRegistry typeAliasRegistry;
+  // 类型转换器注册中心
   protected final TypeHandlerRegistry typeHandlerRegistry;
 
   public BaseBuilder(Configuration configuration) {

@@ -198,6 +198,7 @@ public class XmlConfigBuilderTest {
       assertTrue(config.getTypeAliasRegistry().getTypeAliases().get("blog").equals(Blog.class));
       assertTrue(config.getTypeAliasRegistry().getTypeAliases().get("cart").equals(Cart.class));
 
+      // 注册自定义的类型处理器
       assertThat(config.getTypeHandlerRegistry().getTypeHandler(Integer.class)).isInstanceOf(CustomIntegerTypeHandler.class);
       assertThat(config.getTypeHandlerRegistry().getTypeHandler(Long.class)).isInstanceOf(CustomLongTypeHandler.class);
       assertThat(config.getTypeHandlerRegistry().getTypeHandler(String.class)).isInstanceOf(CustomStringTypeHandler.class);
