@@ -1,6 +1,6 @@
 MyBatis SQL Mapper Framework for Java(源码中文注释版)
 =====================================
-源码解析博客：http://47777205.com/  https://blog.csdn.net/m47838704
+源码解析博客：http://47777205.com/
 =====================================
 
 [![Build Status](https://travis-ci.org/mybatis/mybatis-3.svg?branch=master)](https://travis-ci.org/mybatis/mybatis-3)
